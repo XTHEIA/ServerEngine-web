@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:server_engine_web/pages/community.dart';
 import 'package:server_engine_web/pages/feature.dart';
@@ -52,7 +53,7 @@ class ServerEngineWebRoot extends StatefulWidget {
 }
 
 class _ServerEngineWebRootState extends State<ServerEngineWebRoot> {
-  _Page _page = _Page.features;
+  _Page _page = kReleaseMode ? _Page.features : _Page.download;
 
   void _setPage(_Page page) {
     setState(() {

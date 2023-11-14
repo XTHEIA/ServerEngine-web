@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'dart:html' as html;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:http/http.dart' as http;
 import 'package:server_engine_web/utils.dart';
 import 'package:server_engine_web/widgets/widgets.dart';
@@ -235,9 +236,17 @@ class BuildTile extends StatelessWidget {
 
           // body
           textDiv(Icons.document_scanner, '본문'),
-          Text(
-            _build.body,
-            style: TextStyle(color: Colors.white.withOpacity(0.7)),
+          MarkdownBody(
+            data: _build.body,
+            styleSheet: MarkdownStyleSheet(
+              blockquoteDecoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.1),
+              ),
+              code: TextStyle(
+                fontFamily: jetBrainsMono,
+                backgroundColor: Colors.white.withOpacity(0.1),
+              ),
+            ),
           ),
           const SizedBox(height: 10),
 
