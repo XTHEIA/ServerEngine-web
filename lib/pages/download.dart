@@ -238,6 +238,7 @@ class BuildTile extends StatelessWidget {
           textDiv(Icons.document_scanner, '본문'),
           MarkdownBody(
             data: _build.body,
+            selectable: true,
             styleSheet: MarkdownStyleSheet(
               blockquoteDecoration: BoxDecoration(
                 color: Colors.white.withOpacity(0.1),
