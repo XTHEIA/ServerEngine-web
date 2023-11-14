@@ -136,24 +136,11 @@ class _ServerEngineWebRootState extends State<ServerEngineWebRoot> {
                             children: [
                               IconButton(
                                 icon: const Icon(Icons.code),
-                                onPressed: () =>
-                                    launchUrl(Uri.parse('https://github.com/XTHEIA/ServerEngine-web')),
+                                onPressed: () => launchUrl(Uri.parse(githubUrl)),
                               ),
                               IconButton(
                                 icon: const Icon(Icons.discord),
-                                onPressed: () => showDialog(
-                                    context: context,
-                                    builder: (final context) {
-                                      return Dialog(
-                                        child: Container(
-                                          color: backgroundColor,
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(40.0),
-                                            child: DiscordPage(),
-                                          ),
-                                        ),
-                                      );
-                                    }),
+                                onPressed: () => launchUrl(Uri.parse(discordUrl)),
                               ),
                             ],
                           ),
