@@ -144,6 +144,26 @@ class DownloadsPage extends StatelessWidget {
                       ],
                     ),
                   ),
+                  const SizedBox(height: 10),
+                  Container(
+                    color: Colors.amber.withOpacity(0.1),
+                    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                    child: const Row(
+                      children: [
+                        Icon(Icons.warning, color: Colors.amber),
+                        SizedBox(width: 9),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SelectableText('''
+현재 VirusTotal에서 일부 vendor들에게서 파일에 악성 코드가 포함되었다는 결과가 나와 정보 수집 중입니다.
+Sandbox 테스트에서는 위협이 감지되지 않았고, 실제로 악성 코드는 없으니 안심하고 사용하셔도 됩니다.
+https://www.virustotal.com/gui/file/884fc8df46dca77f6284f6ea89c61e9aad1b1baa2389d83462a930390baa37fd/detection'''),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
                   const SizedBox(height: 20),
 
                   // latest
