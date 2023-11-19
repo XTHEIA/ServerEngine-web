@@ -177,8 +177,7 @@ class _MainPageState extends State<MainPage> {
                   TextSpan(children: [
                     TextSpan(
                       text: 'Server Engine',
-                      style: TextStyle(
-                          fontFamily: jetBrainsMono, letterSpacing: -2.5),
+                      style: TextStyle(fontFamily: jetBrainsMono, letterSpacing: -2.5),
                     ),
                     TextSpan(text: ' : 통합 서버 관리 엔진'),
                   ]),
@@ -188,10 +187,7 @@ class _MainPageState extends State<MainPage> {
                     fontSize: 46,
                     fontWeight: FontWeight.bold,
                     shadows: [
-                      Shadow(
-                          color: Colors.black,
-                          blurRadius: 3,
-                          offset: Offset(1, 1)),
+                      Shadow(color: Colors.black, blurRadius: 3, offset: Offset(1, 1)),
                     ],
                   ),
                 ),
@@ -353,9 +349,9 @@ enum _Banner {
 
   final String id, label, assetPath;
 
-  const _Banner(this.id, this.label)
-      : assetPath = 'assets/image/banner/$id.png';
+  const _Banner(this.id, this.label) : assetPath = 'assets/image/banner/$id.png';
 }
+
 enum Feature {
   servers(Icons.dns, '서버 통합 관리', '여러 개의 서버를 프로그램 내에서 간편하게 관리합니다.', [
     ImageID.main,
@@ -423,7 +419,8 @@ enum ImagedFeature {
   creation(
     '간편한 서버 생성',
     [ImageID.serverCreationPaperFocus],
-    TextSpan(text: ('''
+    TextSpan(
+        text: ('''
 버전 선택만으로 원하는 버전의 서버가 자동 생성됩니다.
 번거로운 서버 코어(버킷) 다운로드 없이 빠르게 서버를 구축할 수 있습니다.''')),
   ),
@@ -508,6 +505,16 @@ OP 부여/박탈, 게임모드 변경, 인벤토리 초기화, 추방, 처치, �
 본 프로그램이 실행 중인 시스템의 로컬 서버에 대해서도
 서버가 잘 동작하고 있는지 파악할 수 있습니다.'''),
   ),
+  discordRpc(
+    'Discord 활동 상태',
+    [
+      ImageID.discordRpcFocus,
+    ],
+    TextSpan(text: '''
+디스코드에 현재 프로그램 사용 상태를 표시합니다.
+실행 중인 서버의 수가 표시되고,
+서버 주소를 기재해 멀티플레이 인원을 모집할 수 있습니다.'''),
+  ),
   java(
     'Java 런타임 관리',
     [ImageID.javaFocus, ImageID.javaDetailFocus],
@@ -515,7 +522,8 @@ OP 부여/박탈, 게임모드 변경, 인벤토리 초기화, 추방, 처치, �
 시스템에 설치된 Java 런타임의 버전 및 세부사항을 파악합니다.
 여러 개의 Java 런타임을 관리하고,
 각 서버별로 원하는 런타임을 사용하여 서버를 실행할 수 있습니다.'''),
-  );
+  ),
+  ;
 
   final String label;
   final List<ImageID> images;

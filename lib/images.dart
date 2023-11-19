@@ -47,6 +47,7 @@ enum ImageID {
   serverProperties0Focus.feature('serverProperties0', '서버 설정(server.properties) 에디터 - 1'),
   serverProperties1Focus.feature('serverProperties1', '서버 설정(server.properties) 에디터 - 2'),
   pluginsFocus.feature('plugins', '서버 플러그인 관리 페이지'),
+  discordRpcFocus.feature('discordRpc','디스코드 활동 상태 표시 기능 (서버 홍보 가능)'),
 
   // tutorial
   tutorialDownload.windowsTutorial('download', '릴리즈 압축 파일 다운로드'),
