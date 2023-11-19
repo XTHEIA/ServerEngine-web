@@ -100,67 +100,70 @@ class _ServerEngineWebRootState extends State<ServerEngineWebRoot> {
       body: Column(
         children: [
           // Navigation Bar
-          Container(
-            height: 90,
-            color: const Color(0xFF0F1519).withOpacity(0.8),
-            padding: const EdgeInsets.only(left: 20, right: 8, top: 15, bottom: 8),
-            alignment: Alignment.bottomCenter,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  crossAxisAlignment: CrossAxisAlignment.end,
+          Material(
+            color: const Color(0xFF0F1519),
+            child: Container(
+              height: 90,
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 20, right: 8, top: 15, bottom: 8),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    // logo
-                    Image.asset(
-                      'assets/image/logo.png',
-                      height: 50,
-                      isAntiAlias: true,
-                    ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          // logo, pages
-                          Row(
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        // logo
+                        Image.asset(
+                          'assets/image/logo.png',
+                          height: 50,
+                          isAntiAlias: true,
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.end,
-                            children: pageButtons,
-                          ),
-
-                          // links
-                          Wrap(
-                            spacing: 5,
                             children: [
-                              IconButton(
-                                icon: const Icon(Icons.code),
-                                onPressed: () => launchUrl(Uri.parse(githubUrl)),
+                              // logo, pages
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: pageButtons,
                               ),
-                              IconButton(
-                                icon: const Icon(Icons.discord),
-                                onPressed: () => launchUrl(Uri.parse(discordUrl)),
+
+                              // links
+                              Wrap(
+                                spacing: 5,
+                                children: [
+                                  IconButton(
+                                    icon: const Icon(Icons.code),
+                                    onPressed: () => launchUrl(Uri.parse(githubUrl)),
+                                  ),
+                                  IconButton(
+                                    icon: const Icon(Icons.discord),
+                                    onPressed: () => launchUrl(Uri.parse(discordUrl)),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
+                    const SizedBox(height: 10),
                   ],
                 ),
-                const SizedBox(height: 10),
-              ],
+              ),
             ),
           ),
 
           // Page
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.only(top: 40),
-              child: SingleChildScrollView(
-                controller: ScrollController(),
+            child: SingleChildScrollView(
+              controller: ScrollController(),
+              child: Padding(
+                padding: const EdgeInsets.only(top: 40),
                 child: Builder(
                   builder: (final context) {
                     final page = _page;
