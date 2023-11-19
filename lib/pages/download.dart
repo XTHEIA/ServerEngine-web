@@ -267,6 +267,7 @@ class BuildTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final assets = _build.assets;
+    final totalDownloads = assets.fold(0, (previousValue, element) => previousValue + element.downloadCount);
     return Container(
       decoration: BoxDecoration(
         color: Colors.blueGrey.withOpacity(0.16),
@@ -315,11 +316,11 @@ class BuildTile extends StatelessWidget {
               ),
             ),
           ),
+          const SizedBox(height: 10),
 
           // assets
           ...!hideFiles
               ? [
-                  const SizedBox(height: 10),
                   textDiv(Icons.download, '파일'),
                   Builder(builder: (context) {
                     final assetsCount = assets.length;
@@ -348,7 +349,10 @@ class BuildTile extends StatelessWidget {
                     );
                   }),
                 ]
-              : []
+              : [
+                  textDiv(Icons.history, '기록'),
+                  Text('총 ${totalDownloads}회 다운로드됨'),
+                ]
         ],
       ),
     );
