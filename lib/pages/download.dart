@@ -25,6 +25,26 @@ final class BuildManager {
 
     return Build.fromJson(jsonDecode(body));
   }
+
+  static Future<Builds> fetchBuilds({int maxCount = 20}) async {
+    final response = await http.get(
+        Uri.parse('https://api.github.com/repos/XTHEIA/ServerEngine-builds/releases?per_page=$maxCount'));
+    if (response.statusCode != 200) throw Exception('response is ${response.statusCode}');
+
+    final body = response.body;
+    final bodyJson = jsonDecode(body) as List;
+    final builds = bodyJson.map((e) => Build.fromJson(e)).toList(growable: false);
+    final latest = await fetchLatest();
+
+    return Builds(latest, builds);
+  }
+}
+
+final class Builds {
+  final Build latest;
+  final List<Build> history;
+
+  Builds(this.latest, this.history);
 }
 
 final class Build {
@@ -98,114 +118,135 @@ class DownloadsPage extends StatelessWidget {
         // 일단 통째로 FutureBuilder
         child: SizedBox(
           width: 1000,
-          child: FutureBuilder(
-            future: BuildManager.fetchLatest(),
-            builder: (final context, final snapshot) {
-              final build = snapshot.data;
-              if (build == null) {
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: snapshot.hasError
-                        ? const [
-                            Icon(Icons.error),
-                            SizedBox(height: 10),
-                            Text('빌드 정보를 가져오지 못했습니다.'),
-                            Text('일시적인 오류일 수 있습니다.'),
-                            Text('같은 문제가 계속 발생할 경우 디스코드 서버를 참고해주세요.')
-                          ]
-                        : const [
-                            CircularProgressIndicator(),
-                            SizedBox(height: 10),
-                            Text('빌드 정보 가져오는 중 ...'),
-                          ],
-                  ),
-                );
-              }
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 10),
-                  Container(
-                    color: Colors.amber.withOpacity(0.1),
-                    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                    child: const Row(
+          child: Column(
+            children: [
+              // notifications
+              Container(
+                color: Colors.amber.withOpacity(0.1),
+                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                child: const Row(
+                  children: [
+                    Icon(Icons.warning, color: Colors.amber),
+                    SizedBox(width: 9),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Icon(Icons.warning, color: Colors.amber),
-                        SizedBox(width: 9),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('프로그램이 아직 개발 단계이므로 예상치 못한 버그가 발생할 수 있습니다.'),
-                            Text('서버 손상이나 손해 발생 시 책임지지 않습니다. 간단한 서버 관리에만 사용해 주세요.'),
-                          ],
-                        ),
+                        Text('프로그램이 아직 개발 단계이므로 예상치 못한 버그가 발생할 수 있습니다.'),
+                        Text('서버 손상이나 손해 발생 시 책임지지 않습니다. 간단한 서버 관리에만 사용해 주세요.'),
                       ],
                     ),
-                  ),
-                  const SizedBox(height: 10),
-                  Container(
-                    color: Colors.amber.withOpacity(0.1),
-                    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                    child: const Row(
+                  ],
+                ),
+              ),
+              const SizedBox(height: 10),
+              Container(
+                color: Colors.amber.withOpacity(0.1),
+                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                child: const Row(
+                  children: [
+                    Icon(Icons.warning, color: Colors.amber),
+                    SizedBox(width: 9),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Icon(Icons.warning, color: Colors.amber),
-                        SizedBox(width: 9),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SelectableText('''
+                        SelectableText('''
 현재 VirusTotal에서 일부 vendor들에게서 파일에 악성 코드가 포함되었다는 결과가 나와 정보 수집 중입니다.
 Sandbox 테스트에서는 위협이 감지되지 않았고, 실제로 악성 코드는 없으니 안심하고 사용하셔도 됩니다.
 https://www.virustotal.com/gui/file/884fc8df46dca77f6284f6ea89c61e9aad1b1baa2389d83462a930390baa37fd/detection'''),
-                          ],
-                        ),
                       ],
                     ),
-                  ),
-                  const SizedBox(height: 20),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 20),
 
-                  // latest
-                  const Row(
-                    children: [
-                      Icon(Icons.new_releases),
-                      Text(
-                        ' 최신 릴리즈',
-                        style: TextStyle(fontSize: 18),
+              // Build List
+              FutureBuilder(
+                future: BuildManager.fetchBuilds(),
+                builder: (final context, final snapshot) {
+                  final builds = snapshot.data;
+                  if (builds == null) {
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: snapshot.hasError
+                            ? const [
+                                Icon(Icons.error),
+                                SizedBox(height: 10),
+                                Text('빌드 정보를 가져오지 못했습니다.'),
+                                Text('일시적인 오류일 수 있습니다.'),
+                                Text('같은 문제가 계속 발생할 경우 디스코드 서버를 참고해주세요.')
+                              ]
+                            : const [
+                                CircularProgressIndicator(),
+                                SizedBox(height: 10),
+                                Text('빌드 정보 가져오는 중 ...'),
+                              ],
                       ),
-                    ],
-                  ),
-                  const Divider(),
-                  BuildTile(build),
-                  const SizedBox(height: 20),
+                    );
+                  }
 
-                  // others
-                  const Text(
-                    '기타 릴리즈',
-                    style: TextStyle(fontSize: 18),
-                  ),
-                  const Divider(),
-                  Container(
-                    color: Colors.amber.withOpacity(0.1),
-                    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                    child: const Row(
-                      children: [
-                        Icon(Icons.warning, color: Colors.amber),
-                        SizedBox(width: 9),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                  final latest = builds.latest;
+                  final history = builds.history;
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // latest
+                      const Row(
+                        children: [
+                          Icon(Icons.new_releases_outlined),
+                          Text(
+                            ' 최신 릴리즈',
+                            style: TextStyle(fontSize: 18),
+                          ),
+                        ],
+                      ),
+                      const Divider(),
+                      BuildTile(latest),
+                      const SizedBox(height: 80),
+
+                      // others
+                      const Row(
+                        children: [
+                          Icon(Icons.history),
+                          Text(
+                            ' 이전 릴리즈 기록',
+                            style: TextStyle(fontSize: 18),
+                          ),
+                        ],
+                      ),
+                      const Divider(),
+                      Container(
+                        color: Colors.amber.withOpacity(0.1),
+                        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                        child: const Row(
                           children: [
-                            Text('성능, 보안 및 안전성을 위하여 최신 릴리즈를 사용해 주세요.'),
-                            Text('구버전의 프로그램은 사용이 제한됩니다.'),
+                            Icon(Icons.warning, color: Colors.amber),
+                            SizedBox(width: 9),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('성능, 보안 및 안전성을 위하여 최신 릴리즈를 사용해 주세요.'),
+                                Text('구버전의 프로그램은 사용이 제한됩니다.'),
+                              ],
+                            ),
                           ],
                         ),
-                      ],
-                    ),
-                  ),
-                ],
-              );
-            },
+                      ),
+                      ...history.map((build) => Padding(
+                            padding: const EdgeInsets.only(top: 10),
+                            child: BuildTile(
+                              build,
+                              hideFiles: true,
+                            ),
+                          )),
+                    ],
+                  );
+                },
+              ),
+              const SizedBox(height: 20),
+            ],
           ),
         ),
       ),
@@ -215,8 +256,13 @@ https://www.virustotal.com/gui/file/884fc8df46dca77f6284f6ea89c61e9aad1b1baa2389
 
 class BuildTile extends StatelessWidget {
   final Build _build;
+  final bool hideFiles;
 
-  const BuildTile(this._build, {super.key});
+  const BuildTile(
+    this._build, {
+    super.key,
+    this.hideFiles = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -269,36 +315,40 @@ class BuildTile extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 10),
 
           // assets
-          textDiv(Icons.download, '파일'),
-          Builder(builder: (context) {
-            final assetsCount = assets.length;
-            if (assetsCount == 0) {
-              return const Padding(
-                padding: EdgeInsets.only(top: 12, bottom: 2),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Icon(
-                      Icons.warning,
-                      size: 20,
-                      color: Colors.amber,
-                    ),
-                    Text(' 추가된 파일이 없습니다.'),
-                  ],
-                ),
-              );
-            }
-            return ListView.separated(
-              shrinkWrap: true,
-              itemCount: assetsCount,
-              separatorBuilder: (c, i) => const SizedBox(height: 10),
-              itemBuilder: (final context, final idx) => AssetTile(assets[idx]),
-            );
-          }),
+          ...!hideFiles
+              ? [
+                  const SizedBox(height: 10),
+                  textDiv(Icons.download, '파일'),
+                  Builder(builder: (context) {
+                    final assetsCount = assets.length;
+                    if (assetsCount == 0) {
+                      return const Padding(
+                        padding: EdgeInsets.only(top: 12, bottom: 2),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Icon(
+                              Icons.warning,
+                              size: 20,
+                              color: Colors.amber,
+                            ),
+                            Text(' 추가된 파일이 없습니다.'),
+                          ],
+                        ),
+                      );
+                    }
+                    return ListView.separated(
+                      shrinkWrap: true,
+                      itemCount: assetsCount,
+                      separatorBuilder: (c, i) => const SizedBox(height: 10),
+                      itemBuilder: (final context, final idx) => AssetTile(assets[idx]),
+                    );
+                  }),
+                ]
+              : []
         ],
       ),
     );
@@ -312,7 +362,7 @@ class BuildTile extends StatelessWidget {
         children: [
           Icon(iconData, size: 18),
           const SizedBox(width: 3),
-          Text('$label  '),
+          Text('$label  ', style: const TextStyle(fontWeight: FontWeight.bold)),
           const Expanded(child: Divider()),
         ],
       ),
