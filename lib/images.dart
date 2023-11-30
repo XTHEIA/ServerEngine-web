@@ -27,6 +27,9 @@ enum ImageID {
   serverCreations.screen('serverCreations', '서버 생성/추가 페이지'),
   settingSave.screen('settingSave', '앱 설정 저장 페이지'),
   worldCommands.screen('worldCommands', '월드 명령어 팔레트'),
+  ngrokRun.screen('ngrokRun','실행 페이지 ngrok 터널링 정보'),
+  ngrokInstances.screen('ngrokInstances','ngrok 인스턴스 목록 페이지'),
+  ngrokStarter0.screen('ngrokStarter0','ngrok 인스턴스 옵션 구성 페이지'),
 
   // feature
   eulaFocus.feature('eula', 'EULA 동의 페이지'),
@@ -48,6 +51,8 @@ enum ImageID {
   serverProperties1Focus.feature('serverProperties1', '서버 설정(server.properties) 에디터 - 2'),
   pluginsFocus.feature('plugins', '서버 플러그인 관리 페이지'),
   discordRpcFocus.feature('discordRpc','디스코드 활동 상태 표시 기능 (서버 홍보 가능)'),
+  ngrokInstancesFocus.feature('ngrokInstances','ngrok 인스턴스 목록 페이지'),
+  ngrokRunFocus.feature('ngrokRun','서버 실행 중 ngrok 터널링 정보 위젯'),
 
   // tutorial
   tutorialDownload.windowsTutorial('download', '릴리즈 압축 파일 다운로드'),

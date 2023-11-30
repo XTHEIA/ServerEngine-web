@@ -366,6 +366,11 @@ enum Feature {
     ImageID.configRun,
     ImageID.configAdvanced,
   ]),
+  ngrok(Icons.lan, 'ngrok 포트포워딩', 'ngrok를 사용하여 포트포워딩 없이 서버를 개방합니다.', [
+    ImageID.ngrokStarter0,
+    ImageID.ngrokInstances,
+    ImageID.ngrokRun,
+  ]),
   performance(Icons.memory, '리소스 모니터링', '각 서버가 사용하는 리소스를 모니터링합니다.', [
     ImageID.runConsole0,
     ImageID.runConsole1,
@@ -428,6 +433,16 @@ enum ImagedFeature {
     '빠르고 강력한 구동',
     [ImageID.runWaitFocus, ImageID.runConsoleFocus, ImageID.configRunFocus],
     TextSpan(text: '프로그램 내에서 서버를 쉽고 빠르게 실행합니다.\n다양한 실행 옵션을 간편하게 구성합니다.'),
+  ),
+  ngrok(
+    '포트포워딩 없는 서버 개방',
+    [ImageID.ngrokInstancesFocus, ImageID.ngrokRunFocus],
+    TextSpan(text: '''
+복잡한 과정 없이 주소 하나로 누구나 서버에 접속할 수 있게 서버를 개방합니다.
+복잡한 포트포워딩, Hamachi 없이 서버에 접속할 수 있습니다.
+
+(비교적 지연시간이 높습니다.)
+'''),
   ),
   players(
     '플레이어 데이터 분석',
