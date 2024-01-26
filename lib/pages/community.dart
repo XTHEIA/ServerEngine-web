@@ -7,7 +7,15 @@ class CommunityPage extends StatelessWidget {
       .map((node) => Padding(
             padding: const EdgeInsets.only(top: 10),
             child: InkWell(
-              onTap: () => launchUrl(Uri.parse(node.url)),
+              onTap: () {
+                launchUrl(Uri.parse(node.url));
+                analytics.logEvent(
+                  name: 'community-view',
+                  parameters: {
+                    'node': node.name,
+                  },
+                );
+              },
               child: Container(
                 width: 999,
                 padding: const EdgeInsets.all(20),

@@ -12,13 +12,14 @@ import 'package:url_launcher/url_launcher.dart';
 import '../main.dart';
 
 final class BuildManager {
-  static final apiLatestRelease =
-      Uri.parse('https://api.github.com/repos/XTHEIA/ServerEngine-builds/releases/latest');
+  static final apiLatestRelease = Uri.parse(
+      'https://api.github.com/repos/XTHEIA/ServerEngine-builds/releases/latest');
 
   static Future<Build> fetchLatest() async {
     log('fetching latest release from github ...');
     final response = await http.get(apiLatestRelease);
-    if (response.statusCode != 200) throw Exception('response is ${response.statusCode}');
+    if (response.statusCode != 200)
+      throw Exception('response is ${response.statusCode}');
 
     final body = response.body;
     log(body);
@@ -27,13 +28,15 @@ final class BuildManager {
   }
 
   static Future<Builds> fetchBuilds({int maxCount = 20}) async {
-    final response = await http.get(
-        Uri.parse('https://api.github.com/repos/XTHEIA/ServerEngine-builds/releases?per_page=$maxCount'));
-    if (response.statusCode != 200) throw Exception('response is ${response.statusCode}');
+    final response = await http.get(Uri.parse(
+        'https://api.github.com/repos/XTHEIA/ServerEngine-builds/releases?per_page=$maxCount'));
+    if (response.statusCode != 200)
+      throw Exception('response is ${response.statusCode}');
 
     final body = response.body;
     final bodyJson = jsonDecode(body) as List;
-    final builds = bodyJson.map((e) => Build.fromJson(e)).toList(growable: false);
+    final builds =
+        bodyJson.map((e) => Build.fromJson(e)).toList(growable: false);
     final latest = await fetchLatest();
 
     return Builds(latest, builds);
@@ -70,9 +73,12 @@ final class Build {
           tag: json['tag_name'],
           name: json['name'],
           branch: json['target_commitish'],
-          publishDate: DateTime.parse(json['published_at']).add(const Duration(hours: 9)),
+          publishDate: DateTime.parse(json['published_at'])
+              .add(const Duration(hours: 9)),
           body: json['body'],
-          assets: (json['assets'] as List).map((json) => Asset.fromJson(json)).toList(),
+          assets: (json['assets'] as List)
+              .map((json) => Asset.fromJson(json))
+              .toList(),
         );
 }
 
@@ -98,8 +104,10 @@ final class Asset {
           name: json['name'],
           label: json['label'],
           downloadUrl: json['browser_download_url'],
-          createdDate: DateTime.parse(json['created_at']).add(const Duration(hours: 9)),
-          updatedDate: DateTime.parse(json['updated_at']).add(const Duration(hours: 9)),
+          createdDate:
+              DateTime.parse(json['created_at']).add(const Duration(hours: 9)),
+          updatedDate:
+              DateTime.parse(json['updated_at']).add(const Duration(hours: 9)),
           size: json['size'],
           downloadCount: json['download_count'],
         );
@@ -123,7 +131,8 @@ class DownloadsPage extends StatelessWidget {
               // notifications
               Container(
                 color: Colors.amber.withOpacity(0.1),
-                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                 child: const Row(
                   children: [
                     Icon(Icons.warning, color: Colors.amber),
@@ -141,7 +150,8 @@ class DownloadsPage extends StatelessWidget {
               const SizedBox(height: 10),
               Container(
                 color: Colors.amber.withOpacity(0.1),
-                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                 child: const Row(
                   children: [
                     Icon(Icons.warning, color: Colors.amber),
@@ -219,7 +229,8 @@ https://www.virustotal.com/gui/file/884fc8df46dca77f6284f6ea89c61e9aad1b1baa2389
                       const Divider(),
                       Container(
                         color: Colors.amber.withOpacity(0.1),
-                        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 10),
                         child: const Row(
                           children: [
                             Icon(Icons.warning, color: Colors.amber),
@@ -267,7 +278,8 @@ class BuildTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final assets = _build.assets;
-    final totalDownloads = assets.fold(0, (previousValue, element) => previousValue + element.downloadCount);
+    final totalDownloads = assets.fold(
+        0, (previousValue, element) => previousValue + element.downloadCount);
     return Container(
       decoration: BoxDecoration(
         color: Colors.blueGrey.withOpacity(0.16),
@@ -283,7 +295,10 @@ class BuildTile extends StatelessWidget {
             children: [
               Text(
                 _build.name,
-                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.tealAccent),
+                style: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.tealAccent),
               ),
               IconButton(
                   tooltip: '해당 빌드의 정보를 GitHub에서 엽니다.\n${_build.webUrl}',
@@ -345,7 +360,8 @@ class BuildTile extends StatelessWidget {
                       shrinkWrap: true,
                       itemCount: assetsCount,
                       separatorBuilder: (c, i) => const SizedBox(height: 10),
-                      itemBuilder: (final context, final idx) => AssetTile(assets[idx]),
+                      itemBuilder: (final context, final idx) =>
+                          AssetTile(assets[idx]),
                     );
                   }),
                 ]
@@ -405,6 +421,15 @@ class AssetTile extends StatelessWidget {
       message: asset.downloadUrl,
       child: InkWell(
         onTap: () {
+          analytics.logEvent(
+            name: 'asset-downloaded',
+            parameters: {
+              'asset': asset.name,
+              'label': asset.label ?? 'null',
+              'url': asset.downloadUrl,
+            },
+          );
+
           html.AnchorElement(href: asset.downloadUrl)
             ..target = 'file_download'
             ..click();

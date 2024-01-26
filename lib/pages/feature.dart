@@ -177,7 +177,8 @@ class _MainPageState extends State<MainPage> {
                   TextSpan(children: [
                     TextSpan(
                       text: 'Server Engine',
-                      style: TextStyle(fontFamily: jetBrainsMono, letterSpacing: -2.5),
+                      style: TextStyle(
+                          fontFamily: jetBrainsMono, letterSpacing: -2.5),
                     ),
                     TextSpan(text: ' : 통합 서버 관리 엔진'),
                   ]),
@@ -187,7 +188,10 @@ class _MainPageState extends State<MainPage> {
                     fontSize: 46,
                     fontWeight: FontWeight.bold,
                     shadows: [
-                      Shadow(color: Colors.black, blurRadius: 3, offset: Offset(1, 1)),
+                      Shadow(
+                          color: Colors.black,
+                          blurRadius: 3,
+                          offset: Offset(1, 1)),
                     ],
                   ),
                 ),
@@ -286,6 +290,11 @@ class _MainPageState extends State<MainPage> {
                       onTap: () {
                         _setCurrentFeature(feature);
                         _startRotationTimer();
+                        analytics
+                            .logEvent(name: 'feature-selected', parameters: {
+                          'feature': feature.name,
+                          'label': feature.label,
+                        });
                       },
                       child: Container(
                         width: 70,
@@ -349,7 +358,8 @@ enum _Banner {
 
   final String id, label, assetPath;
 
-  const _Banner(this.id, this.label) : assetPath = 'assets/image/banner/$id.png';
+  const _Banner(this.id, this.label)
+      : assetPath = 'assets/image/banner/$id.png';
 }
 
 enum Feature {
@@ -375,7 +385,8 @@ enum Feature {
     ImageID.runConsole0,
     ImageID.runConsole1,
   ]),
-  player(Icons.people, '플레이어 분석', '서버로부터 플레이어 데이터를 추출하여 분석합니다. 인벤토리, 통계 등의 데이터를 시각화합니다.', [
+  player(Icons.people, '플레이어 분석',
+      '서버로부터 플레이어 데이터를 추출하여 분석합니다. 인벤토리, 통계 등의 데이터를 시각화합니다.', [
     ImageID.players,
     ImageID.playerData,
   ]),
@@ -386,7 +397,8 @@ enum Feature {
   events(Icons.chat, '이벤트 분석', '채팅 등의 서버 이벤트를 분석합니다.', [
     ImageID.events,
   ]),
-  serverIcon(Icons.image, '아이콘 설정', '서버 아이콘을 간편하게 설정합니다. 알맞는 크기와 포맷으로 자동 변환됩니다.', [
+  serverIcon(
+      Icons.image, '아이콘 설정', '서버 아이콘을 간편하게 설정합니다. 알맞는 크기와 포맷으로 자동 변환됩니다.', [
     ImageID.serverIcon,
   ]),
   configuration(Icons.settings, '설정 구성', '다양한 서버의 설정을 간편하게 구성합니다.', [
@@ -457,7 +469,11 @@ enum ImagedFeature {
   ),
   commands(
     '명령어 팔레트',
-    [ImageID.playerCommandsFocus, ImageID.worldCommandsFocus, ImageID.itemGiverFocus],
+    [
+      ImageID.playerCommandsFocus,
+      ImageID.worldCommandsFocus,
+      ImageID.itemGiverFocus
+    ],
     TextSpan(text: '''
 클릭 한 번으로 다양한 기능을 수행하는 유틸리티를 제공합니다.
         
@@ -488,7 +504,11 @@ OP 부여/박탈, 게임모드 변경, 인벤토리 초기화, 추방, 처치, �
   ),
   configuration(
     '서버 설정 에디터',
-    [ImageID.serverProperties0Focus, ImageID.serverProperties1Focus, ImageID.pluginsFocus],
+    [
+      ImageID.serverProperties0Focus,
+      ImageID.serverProperties1Focus,
+      ImageID.pluginsFocus
+    ],
     TextSpan(text: '''
 서버의 다양한 설정 및 확장을 쉽고 간편하게 관리할 수 있습니다.
 

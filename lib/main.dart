@@ -1,16 +1,34 @@
+import 'dart:developer';
+
+import 'package:device_info_plus/device_info_plus.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:server_engine_web/firebase_options.dart';
 import 'package:server_engine_web/pages/community.dart';
 import 'package:server_engine_web/pages/feature.dart';
 import 'package:server_engine_web/pages/guide.dart';
 import 'package:server_engine_web/pages/info.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'discord.dart';
 import 'pages/download.dart';
 
-void main() {
+void main() async {
   runApp(const ServerEngineWeb());
+  initFirebase();
+}
+
+void initFirebase() async {
+  final webInfo = await DeviceInfoPlugin().webBrowserInfo;
+
+  final app = await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  await analytics.logAppOpen(parameters: {
+    'user-agent': webInfo.userAgent ?? 'null',
+    'browser': webInfo.browserName.name,
+  });
 }
 
 const primaryColor = Color(0xFF49BAF7);
@@ -19,6 +37,8 @@ const nanumBarunGothic = 'NanumBarunGothic';
 const jetBrainsMono = 'JetBrains Mono';
 const githubUrl = 'https://github.com/XTHEIA/ServerEngine-web';
 const discordUrl = 'https://discord.gg/6BY2FzG54h';
+
+final analytics = FirebaseAnalytics.instance;
 
 class ServerEngineWeb extends StatelessWidget {
   const ServerEngineWeb({super.key});
@@ -56,9 +76,15 @@ class _ServerEngineWebRootState extends State<ServerEngineWebRoot> {
   _Page _page = kReleaseMode ? _Page.features : _Page.download;
 
   void _setPage(_Page page) {
+    final isDif = page != _page;
     setState(() {
       _page = page;
     });
+    if (isDif) {
+      analytics.logScreenView(
+        screenName: page.id,
+      );
+    }
   }
 
   late final pageButtons = _Page.values.map((p) {
@@ -106,7 +132,8 @@ class _ServerEngineWebRootState extends State<ServerEngineWebRoot> {
               height: 90,
               alignment: Alignment.bottomCenter,
               child: Padding(
-                padding: const EdgeInsets.only(left: 20, right: 8, top: 15, bottom: 8),
+                padding: const EdgeInsets.only(
+                    left: 20, right: 8, top: 15, bottom: 8),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -138,11 +165,13 @@ class _ServerEngineWebRootState extends State<ServerEngineWebRoot> {
                                 children: [
                                   IconButton(
                                     icon: const Icon(Icons.code),
-                                    onPressed: () => launchUrl(Uri.parse(githubUrl)),
+                                    onPressed: () =>
+                                        launchUrl(Uri.parse(githubUrl)),
                                   ),
                                   IconButton(
                                     icon: const Icon(Icons.discord),
-                                    onPressed: () => launchUrl(Uri.parse(discordUrl)),
+                                    onPressed: () =>
+                                        launchUrl(Uri.parse(discordUrl)),
                                   ),
                                 ],
                               ),
