@@ -1,10 +1,10 @@
-import 'dart:developer';
-
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:seo/html/seo_controller.dart';
+import 'package:seo/html/tree/widget_tree.dart';
 import 'package:server_engine_web/firebase_options.dart';
 import 'package:server_engine_web/pages/community.dart';
 import 'package:server_engine_web/pages/feature.dart';
@@ -13,6 +13,7 @@ import 'package:server_engine_web/pages/info.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'pages/download.dart';
+import 'widgets/seo_text.dart';
 
 void main() async {
   runApp(const ServerEngineWeb());
@@ -45,22 +46,26 @@ class ServerEngineWeb extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Server Engine',
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: primaryColor,
-          background: backgroundColor,
-          brightness: Brightness.dark,
+    return SeoController(
+      enabled: true,
+      tree: WidgetTree(context: context),
+      child: MaterialApp(
+        title: 'Server Engine',
+        theme: ThemeData(
+          useMaterial3: true,
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: primaryColor,
+            background: backgroundColor,
+            brightness: Brightness.dark,
+          ),
+          fontFamily: nanumBarunGothic,
+          dialogTheme: DialogTheme(
+            backgroundColor: Color.lerp(Colors.black, backgroundColor, 0.6),
+            shape: Border.all(color: Colors.transparent),
+          ),
         ),
-        fontFamily: nanumBarunGothic,
-        dialogTheme: DialogTheme(
-          backgroundColor: Color.lerp(Colors.black, backgroundColor, 0.6),
-          shape: Border.all(color: Colors.transparent),
-        ),
+        home: const ServerEngineWebRoot(),
       ),
-      home: const ServerEngineWebRoot(),
     );
   }
 }
@@ -105,7 +110,7 @@ class _ServerEngineWebRootState extends State<ServerEngineWebRoot> {
                 size: 19,
               ),
               const SizedBox(width: 4),
-              Text(
+              SeoText(
                 p.label,
                 style: const TextStyle(
                   color: Colors.white,

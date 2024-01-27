@@ -2,9 +2,11 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:seo/seo.dart';
 import 'package:server_engine_web/images.dart';
 import 'package:server_engine_web/main.dart';
 import 'package:server_engine_web/slideshow.dart';
+import 'package:server_engine_web/widgets/seo_text.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -50,13 +52,11 @@ class MainPage extends StatefulWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 10),
-            Text(
-              feature.label,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 30,
-              ),
-            ),
+            SeoText(feature.label,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 30,
+                )),
             const Divider(),
             const SizedBox(height: 10),
             Text.rich(
@@ -173,26 +173,29 @@ class _MainPageState extends State<MainPage> {
             padding: const EdgeInsets.symmetric(horizontal: 50),
             child: Column(
               children: [
-                const Text.rich(
-                  TextSpan(children: [
-                    TextSpan(
-                      text: 'Server Engine',
-                      style: TextStyle(
-                          fontFamily: jetBrainsMono, letterSpacing: -2.5),
+                Seo.text(
+                  text: '서버 통합 관리 엔진',
+                  child: const Text.rich(
+                    TextSpan(children: [
+                      TextSpan(
+                        text: 'Server Engine',
+                        style: TextStyle(
+                            fontFamily: jetBrainsMono, letterSpacing: -2.5),
+                      ),
+                      TextSpan(text: ' : 통합 서버 관리 엔진'),
+                    ]),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 46,
+                      fontWeight: FontWeight.bold,
+                      shadows: [
+                        Shadow(
+                            color: Colors.black,
+                            blurRadius: 3,
+                            offset: Offset(1, 1)),
+                      ],
                     ),
-                    TextSpan(text: ' : 통합 서버 관리 엔진'),
-                  ]),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: 46,
-                    fontWeight: FontWeight.bold,
-                    shadows: [
-                      Shadow(
-                          color: Colors.black,
-                          blurRadius: 3,
-                          offset: Offset(1, 1)),
-                    ],
                   ),
                 ),
                 const SizedBox(height: 40),
@@ -308,11 +311,14 @@ class _MainPageState extends State<MainPage> {
                         child: Icon(feature.iconData, size: 27),
                       ),
                     ),
-                    Text(
-                      feature.label,
-                      maxLines: 1,
-                      style: const TextStyle(
-                        fontSize: 13,
+                    Seo.text(
+                      text: feature.label,
+                      child: Text(
+                        feature.label,
+                        maxLines: 1,
+                        style: const TextStyle(
+                          fontSize: 13,
+                        ),
                       ),
                     ),
                   ],
