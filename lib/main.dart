@@ -169,11 +169,6 @@ class _ServerEngineWebRootState extends State<ServerEngineWebRoot> {
                                 spacing: 5,
                                 children: [
                                   IconButton(
-                                    icon: const Icon(Icons.code),
-                                    onPressed: () =>
-                                        launchUrl(Uri.parse(githubUrl)),
-                                  ),
-                                  IconButton(
                                     icon: const Icon(Icons.discord),
                                     onPressed: () =>
                                         launchUrl(Uri.parse(discordUrl)),
