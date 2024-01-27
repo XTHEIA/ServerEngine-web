@@ -13,7 +13,7 @@ jobs:
           channel: 'stable'
       - run: flutter pub get
       - run: flutter config --enable-web
-      - run: flutter build web"
+      - run: flutter build web
 
       - run: git config user.name github-actions
       - run: git config user.email github-actions@github.com
