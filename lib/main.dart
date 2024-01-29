@@ -50,7 +50,7 @@ class ServerEngineWeb extends StatelessWidget {
       enabled: true,
       tree: WidgetTree(context: context),
       child: MaterialApp(
-        title: 'Server Engine',
+        title: 'Server Engine - 간편하고 강력한 서버 실행, 관리 프로그램',
         theme: ThemeData(
           useMaterial3: true,
           colorScheme: ColorScheme.fromSeed(
