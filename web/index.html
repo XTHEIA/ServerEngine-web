@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html>
 <style>
+
+    * {
+        font-family: 'Pretendard-Regular';
+        src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff');
+        font-weight: 400;
+        font-style: normal;
+    }
+
     body {
         margin: 0;
         padding: 0;
@@ -9,70 +17,13 @@
     .loading-screen {
         height: 100vh;
         display: flex;
-        background: #0F1519;
-        color: white;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
-        position: relative;\
+        color: white;
+        background: #0F1519;
     }
 
-    .loader {
-        width: 35px;
-        height: 35px;
-        border-radius: 100%;
-        background: linear-gradient(#49aefd, #54eccc, #f6fa4f);
-        animation: animate 1.2s linear infinite;
-        margin-right: 15px;
-    }
-
-    @keyframes animate {
-        0% {
-            transform: rotate(0deg);
-        }
-        100% {
-            transform: rotate(960deg);
-        }
-    }
-
-    .loader span {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        border-radius: 50%;
-        background: linear-gradient(#49aefd, #54eccc, #f6fa4f);
-    }
-
-    .loader span:nth-child(1) {
-        filter: blur(5px);
-    }
-
-    .loader span:nth-child(2) {
-        filter: blur(10px);
-    }
-
-    .loader span:nth-child(3) {
-        filter: blur(25px);
-    }
-
-    .loader span:nth-child(4) {
-        filter: blur(50px);
-    }
-
-    .loader:after {
-        content: '';
-        top: 10px;
-        left: 10px;
-        right: 10px;
-        bottom: 10px;
-        background: #f1f1f1;
-        border-radius: 50%;
-    }
-
-    .logo {
-        position: absolute;
-        top: 0; /* Adjust the top position */
-        left: 0; /* Adjust the left position */
-    }
 </style>
 <head>
     <base href="$FLUTTER_BASE_HREF">
@@ -87,10 +38,13 @@
     <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
     <!-- Favicon -->
-    <link rel="icon" href="favicon.png"/>
+    <link rel="icon" type="image/png" href="/favicon.png"/>
 
     <!-- Manifest -->
     <link rel="manifest" href="manifest.json">
+
+    <!-- Css -->
+    <link href="spinner.css" rel="stylesheet">
 
     <!-- Title & SEO -->
     <meta name="title" content="Server Engine - 간편하고 강력한 서버 실행, 관리 프로그램">
@@ -116,30 +70,31 @@
 <body>
 <div class="loading-screen">
     <img style="margin-left: 20px; margin-top: 15px" src="logo.png" class="logo" height="50px" alt="LOGO IMAGE">
-    <div class="loader">
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
+    <div class="spinner" style="margin-top: 60px">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
     </div>
-    <div>
-        <h3 style="margin-bottom: 0">Loading Server Engine webpage</h3>
-        <p id="loading_text" style="margin-top: 0"></p>
-    </div>
+    <p id="loading_text" style="margin-top: 25px; font-size: 13px; color: #999999; text-align: center">
+        ...
+    </p>
 </div>
 <script>
     window.addEventListener('load', function(ev) {
       var loading = document.querySelector('#loading_text');
-      loading.textContent = "데이터 로드 중 ...";
+      loading.innerHTML = "환영합니다! 잠시만 기다려주세요 ...";
       _flutter.loader.loadEntrypoint({
         serviceWorker: {
           serviceWorkerVersion: serviceWorkerVersion,
         },
         onEntrypointLoaded: async function(engineInitializer) {
-          loading.textContent = "진입점 로드 중 ...";
+          loading.innerHTML  = "진입점 로드 중 ...";
           let appRunner = await engineInitializer.initializeEngine();
 
-          loading.textContent = "엔진 시작 중 ...";
+          loading.innerHTML  = "엔진 시작 중 ...";
           await appRunner.runApp();
         }
       });
