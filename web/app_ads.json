@@ -1,0 +1,30 @@
+{
+  "tiles": [
+    {
+      "id": "test_01",
+      "title": "Test AD Title 1",
+      "description": "Test AD Description\nLine 2\nLine 3",
+      "url": "https://naver.com",
+      "icon_url": "https://sbxt.kr/icon_transparent.png",
+      "clipboard": false,
+      "provider": {
+        "id": "provider0",
+        "name": "Provider Name",
+        "contact": "Provider Contact"
+      }
+    },
+    {
+      "id": "test_02",
+      "title": "타일형 광고 테스트",
+      "description": "타일형 광고 테스트 설명\n1\n2\n3",
+      "url": "https://naver.com",
+      "icon_url": "https://sbxt.kr/icon_transparent.png",
+      "clipboard": true,
+      "provider": {
+        "id": "provider1",
+        "name": "광고 공급자 테스트 0",
+        "contact": "공급자 연락처"
+      }
+    }
+  ]
+}
