@@ -45,7 +45,7 @@ class InformationPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(
-                  width: 210,
+                  width: 230,
                   child: InkWell(
                     onTap: launchGitHubActions,
                     child: Text(
@@ -61,7 +61,7 @@ class InformationPage extends StatelessWidget {
                   child: VerticalDivider(),
                 ),
                 SizedBox(
-                  width: 210,
+                  width: 230,
                   child: InkWell(
                     onTap: launchGitHubPages,
                     child: Text(
