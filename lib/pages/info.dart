@@ -30,7 +30,10 @@ class InformationPage extends StatelessWidget {
             Divider(),
             SizedBox(
               height: 100,
-              child: FlutterLogo(style: FlutterLogoStyle.horizontal, size: 250, textColor: Colors.white),
+              child: FlutterLogo(
+                  style: FlutterLogoStyle.horizontal,
+                  size: 250,
+                  textColor: Colors.white),
             ),
             SizedBox(height: 60),
 
@@ -48,7 +51,8 @@ class InformationPage extends StatelessWidget {
                     child: Text(
                       'GitHub Actions',
                       textAlign: TextAlign.right,
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
                     ),
                   ),
                 ),
@@ -62,7 +66,8 @@ class InformationPage extends StatelessWidget {
                     onTap: launchGitHubPages,
                     child: Text(
                       'GitHub Pages',
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
                     ),
                   ),
                 ),
@@ -90,9 +95,16 @@ class InformationPage extends StatelessWidget {
             SizedBox(height: 10),
             FontBlock(
               fontName: 'Noto Sans KR',
-              fontFamilly: 'Noto Sans Korean',
+              fontFamilly: 'Noto Sans',
               url: 'https://fonts.google.com/noto/specimen/Noto+Sans+KR',
               color: Colors.redAccent,
+            ),
+            SizedBox(height: 10),
+            FontBlock(
+              fontName: 'Pretendard',
+              fontFamilly: pretendard,
+              url: 'https://github.com/orioncactus/pretendard',
+              color: Colors.amberAccent,
             ),
           ],
         ),

@@ -36,6 +36,7 @@ const primaryColor = Color(0xFF49BAF7);
 const backgroundColor = Color(0xFF0F1519);
 const nanumBarunGothic = 'NanumBarunGothic';
 const jetBrainsMono = 'JetBrains Mono';
+const pretendard = 'Pretendard';
 const githubUrl = 'https://github.com/XTHEIA/ServerEngine-web';
 const discordUrl = 'https://discord.gg/6BY2FzG54h';
 
@@ -58,7 +59,7 @@ class ServerEngineWeb extends StatelessWidget {
             background: backgroundColor,
             brightness: Brightness.dark,
           ),
-          fontFamily: nanumBarunGothic,
+          fontFamily: pretendard,
           dialogTheme: DialogTheme(
             backgroundColor: Color.lerp(Colors.black, backgroundColor, 0.6),
             shape: Border.all(color: Colors.transparent),
@@ -81,7 +82,13 @@ class _ServerEngineWebRootState extends State<ServerEngineWebRoot> {
   _Page _page = kReleaseMode ? _Page.features : _Page.download;
 
   void _setPage(_Page page) {
+    if (page == _Page.guide) {
+      launchUrl(Uri.parse('https://docs.server-engine.kr/'));
+      return;
+    }
+
     final isDif = page != _page;
+
     setState(() {
       _page = page;
     });

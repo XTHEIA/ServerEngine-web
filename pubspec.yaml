@@ -90,3 +90,11 @@ flutter:
           weight: 400
         - asset: assets/fonts/JetBrainsMonoNL-Bold.ttf
           weight: 700
+    - family: Pretendard
+      fonts:
+        - asset: assets/fonts/Pretendard-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Pretendard-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Pretendard-Bold.ttf
+          weight: 700

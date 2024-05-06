@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:server_engine_web/pages/qna.dart';
 import 'package:server_engine_web/pages/tutorial.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class GuidePage extends StatefulWidget {
   const GuidePage({super.key});
@@ -14,6 +15,42 @@ class _GuidePageState extends State<GuidePage> {
 
   @override
   Widget build(BuildContext context) {
+    return Center(
+      child: InkWell(
+        onTap: () {
+          launchUrl(Uri.parse('https://docs.server-engine.kr/'));
+        },
+        child: Container(
+          padding: const EdgeInsets.all(15),
+          decoration: BoxDecoration(
+            color: Colors.blueGrey.withOpacity(0.4),
+            borderRadius: BorderRadius.circular(5),
+          ),
+          child: const Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.document_scanner, size: 34),
+              SizedBox(width: 10),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '가이드 문서',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                  Text('가이드 문서로 이동'),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+
     final page = _currentPage;
     if (page == null) {
       return Container(
