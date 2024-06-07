@@ -38,7 +38,7 @@ const nanumBarunGothic = 'NanumBarunGothic';
 const jetBrainsMono = 'JetBrains Mono';
 const pretendard = 'Pretendard';
 const githubUrl = 'https://github.com/XTHEIA/ServerEngine-web';
-const discordUrl = 'https://discord.gg/6BY2FzG54h';
+const discordUrl = 'https://discord.com/invite/9942fpABeZ';
 
 final analytics = FirebaseAnalytics.instance;
 
