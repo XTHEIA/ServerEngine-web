@@ -59,7 +59,15 @@ final class Build {
     required this.publishDate,
     required this.body,
     required this.assets,
-  });
+  }) {
+    for (final platform in ['Windows', 'macOS', 'Linux']) {
+      final targets = assets.where((a) => a.name.toLowerCase().contains(platform.toLowerCase())).toList();
+      targets.sort((a, b) => b.updatedDate.millisecondsSinceEpoch - a.updatedDate.millisecondsSinceEpoch);
+
+      final first = targets.firstOrNull;
+      first?.markLatest(platform);
+    }
+  }
 
   Build.fromJson(dynamic json)
       : this(
@@ -80,6 +88,7 @@ final class Asset {
   final String downloadUrl;
   final int downloadCount, size;
   final DateTime createdDate, updatedDate;
+  String? _latestFor;
 
   Asset({
     required this.name,
@@ -101,6 +110,12 @@ final class Asset {
           size: json['size'],
           downloadCount: json['download_count'],
         );
+
+  String? get latestFor => _latestFor;
+
+  void markLatest(String platform) {
+    _latestFor = platform;
+  }
 }
 
 class DownloadsPage extends StatelessWidget {
@@ -345,7 +360,7 @@ class BuildTile extends StatelessWidget {
                       separatorBuilder: (c, i) => const SizedBox(height: 10),
                       itemBuilder: (final context, final idx) {
                         final asset = assets[idx];
-                        return AssetTile(asset, highlight: asset == _build.latestAsset);
+                        return AssetTile(asset);
                       },
                     );
                   }),
@@ -396,17 +411,17 @@ class BuildTile extends StatelessWidget {
 
 class AssetTile extends StatelessWidget {
   final Asset asset;
-  final bool highlight;
 
   const AssetTile(
     this.asset, {
     super.key,
-    this.highlight = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    late final label = asset.label;
+    final latestFor = asset.latestFor;
+    final isLatest = latestFor != null;
+    final label = asset.label;
     return Tooltip(
       message: asset.downloadUrl,
       child: InkWell(
@@ -426,8 +441,8 @@ class AssetTile extends StatelessWidget {
         },
         child: Container(
           decoration: BoxDecoration(
-            color: Colors.blueGrey.withOpacity(0.2),
-            border: highlight
+            color: isLatest ? Colors.amber.withOpacity(0.1) : Colors.blueGrey.withOpacity(0.2),
+            border: false && asset.latestFor != null
                 ? Border.all(color: Colors.amber, width: 1, strokeAlign: BorderSide.strokeAlignInside)
                 : null,
           ),
@@ -437,20 +452,28 @@ class AssetTile extends StatelessWidget {
           ),
           child: Row(
             children: [
-              const Icon(Icons.download, size: 30),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 6),
+                child: Icon(Icons.download, size: 30, color: isLatest ? Colors.amber : null),
+              ),
               const SizedBox(width: 10),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    '${asset.name}${label == null ? '' : ' ($label)'}',
-                    style: const TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: jetBrainsMono,
-                      letterSpacing: 0,
-                    ),
-                  ),
+                  Text.rich(TextSpan(children: [
+                    // Name
+                    TextSpan(
+                        text: '${asset.name}${label == null ? '' : ' ($label)'}',
+                        style: TextStyle(fontFamily: jetBrainsMono, letterSpacing: 0)),
+
+                    // Latest Marker
+                    asset.latestFor != null
+                        ? TextSpan(
+                            text: ' (${asset.latestFor} 최신 빌드)',
+                            style: TextStyle(color: Colors.amberAccent),
+                          )
+                        : TextSpan(),
+                  ], style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold))),
                   const SizedBox(height: 4),
                   IconText(
                     Icons.calendar_month,
