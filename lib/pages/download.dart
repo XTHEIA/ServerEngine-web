@@ -78,7 +78,7 @@ final class Build {
           publishDate: DateTime.parse(json['published_at']).add(const Duration(hours: 9)),
           body: json['body'],
           assets: (json['assets'] as List).map((json) => Asset.fromJson(json)).toList()
-            ..sort((a, b) => b.updatedDate.millisecondsSinceEpoch - a.updatedDate.millisecondsSinceEpoch),
+            ..sort((a, b) => b.createdDate.millisecondsSinceEpoch - a.createdDate.millisecondsSinceEpoch),
         );
 }
 
