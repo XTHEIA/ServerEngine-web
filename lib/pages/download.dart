@@ -62,7 +62,7 @@ final class Build {
   }) {
     for (final platform in ['Windows', 'macOS', 'Linux']) {
       final targets = assets.where((a) => a.name.toLowerCase().contains(platform.toLowerCase())).toList();
-      targets.sort((a, b) => b.updatedDate.millisecondsSinceEpoch - a.updatedDate.millisecondsSinceEpoch);
+      targets.sort((a, b) => b.createdDate.millisecondsSinceEpoch - a.createdDate.millisecondsSinceEpoch);
 
       final first = targets.firstOrNull;
       first?.markLatest(platform);
