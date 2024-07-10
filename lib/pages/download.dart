@@ -477,7 +477,7 @@ class AssetTile extends StatelessWidget {
                   const SizedBox(height: 4),
                   IconText(
                     Icons.calendar_month,
-                    '${asset.updatedDate.formatGeneral()} (${asset.updatedDate.getElapsedTimeFormatted()})',
+                    '${asset.createdDate.formatGeneral()} (${asset.createdDate.getElapsedTimeFormatted()} 생성)',
                     tooltip: '마지막 업데이트 일시',
                     color: Colors.white.withOpacity(0.55),
                   ),
