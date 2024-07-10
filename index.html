@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<style>
+
+    * {
+        font-family: 'Pretendard-Regular';
+        src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff');
+        font-weight: 400;
+        font-style: normal;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+    .loading-screen {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        background: #0F1519;
+    }
+
+</style>
+<head>
+    <base href="/">
+
+    <meta charset="UTF-8">
+    <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+
+    <!-- iOS meta tags & icons -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Server Engine">
+    <link rel="apple-touch-icon" href="https://server-engine.kr/icons/favicon.png">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://server-engine.kr/icons/favicon.png"/>
+    <link rel="shortcut icon" type="image/png" href="https://server-engine.kr/icons/favicon.png"/>
+
+
+    <!-- Manifest -->
+    <link rel="manifest" href="manifest.json">
+
+    <!-- Css -->
+    <link href="spinner.css" rel="stylesheet">
+
+    <!-- Title & SEO -->
+    <meta name="title" content="Server Engine - 간편하고 강력한 서버 실행, 관리 프로그램">
+    <meta property="og:title" content="Server Engine - 간편하고 강력한 서버 실행, 관리 프로그램">
+    <meta property="og:image" content="https://server-engine.kr/icons/favicon.png">
+    <title>Server Engine - 간편하고 강력한 서버 실행, 관리 프로그램</title>
+
+    <meta name="description" content="마크 서버를 클릭 몇 번으로 빠르게 만들고 실행하세요. 복잡한 포트포워딩 없이 서버를 개방할 수 있습니다. 서버의 데이터를 보기 쉽게 조회해 보세요.">
+    <meta property="og:description" content="마크 서버를 클릭 몇 번으로 빠르게 만들고 실행하세요. 복잡한 포트포워딩 없이 서버를 개방할 수 있습니다. 서버의 데이터를 보기 쉽게 조회해 보세요.">
+
+    <meta name="keywords" content="마크 서버 생성, 관리, 포트포워딩(터널링), 실행, 데이터 조회, 다운로드">
+    <meta property="og:site_name" content="Server Engine">
+
+    <!-- Verification -->
+    <meta name="naver-site-verification" content="b9d10a154ff38790c126a7da6dbe088ec2c6a015" />
+
+    <script>
+        // The value below is injected by flutter build, do not touch.
+        const serviceWorkerVersion = "1973243612";
+    </script>
+    <!-- This script adds the flutter initialization JS code -->
+    <script src="flutter.js" defer></script>
+</head>
+<body>
+<div class="loading-screen">
+    <img style="margin-left: 20px; margin-top: 15px" src="logo.png" class="logo" height="50px" alt="LOGO IMAGE">
+    <div class="spinner" style="margin-top: 60px">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+    <p id="loading_text" style="margin-top: 25px; font-size: 13px; color: #999999; text-align: center">
+        ...
+    </p>
+</div>
+<script>
+    window.addEventListener('load', function(ev) {
+      var loading = document.querySelector('#loading_text');
+      loading.innerHTML = "환영합니다! 잠시만 기다려주세요 ...";
+      _flutter.loader.loadEntrypoint({
+        serviceWorker: {
+          serviceWorkerVersion: serviceWorkerVersion,
+        },
+        onEntrypointLoaded: async function(engineInitializer) {
+          loading.innerHTML  = "진입점 로드 중 ...";
+          let appRunner = await engineInitializer.initializeEngine();
+
+          loading.innerHTML  = "엔진 시작 중 ...";
+          await appRunner.runApp();
+        }
+      });
+    });
+</script>
+</body>
+</html>
